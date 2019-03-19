@@ -26,6 +26,7 @@ typedef struct dictEntry{
     //指向另一个哈希表节点指针（解决键冲突问题，多个哈希值相同的键值对连接在一起）
     struct dictEntry *next;
 }
+```
 3. redis字典结构定义：
 ```
 typedef struct dict{
@@ -36,7 +37,7 @@ typedef struct dict{
     //哈希表
     dictht ht[2];//通常使用ht[0] ht[1]在哈希表rehash时使用
     //当rehash不在进行时，值为-1
-    int trehashidx
+    int trehashidx;
 } dict;
 ```
 4. 特性
