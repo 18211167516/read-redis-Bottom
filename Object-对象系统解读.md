@@ -18,7 +18,7 @@ typedef struct redisObject{
     void *ptr;
 } robj
 ```
-3. type
+3. type (type key 命令)
 ```
 类型常量      | 对象的名称   | TYPE命令返回
 REDIS_STRING | 字符串对象   | string
@@ -27,7 +27,7 @@ REDIS_HASH   | 哈希队列     | hash
 REDIS_SET    | 集合对象     | set
 REDIS_ZSET   | 有序集合对象 | zset
 ```
-4. encoding 编码
+4. encoding 编码 （object encoding）
 ```
 编码常量                     | 编码对应数据结构  
 REDIS_ENCODING_INT          | long类型的整数   
@@ -36,7 +36,7 @@ REDIS_ENCODING_RAW          | 简单动态字符串
 REDIS_ENCODING_HT           | 字典     
 REDIS_ENCODING_LINKEDLIST   | 双端链表 
 REDIS_ENCODING_ZIPLIST      | 压缩列表
-REDIS_ENCODING_INTSEET      | 整数集合
+REDIS_ENCODING_INTSET      | 整数集合
 REDIS_ENCODING_SKIPLIST     | 跳跃表和字典
 ```
 5. 不同类型和编码的对象
