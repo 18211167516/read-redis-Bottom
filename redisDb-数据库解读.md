@@ -6,6 +6,21 @@ struct redisServer{
     redisDb *db;
     //数据库数量（由配置的database选项决定，默认16）
     int dbnum;
+    //记录保存条件的数组
+    struct saveparam *saveparamsl;
+    //修改计数器
+    long long dirty;
+    //上一次执行保存的时间
+    time_t lastsave;
+    //AOF缓存区
+    sds aof_buf;
+}
+//RDB 持久化条件数组结构体
+struct saveparam{
+     //秒数
+     time_t seconds;
+     //修改数
+     int changes;
 }
 ```
 2. redisClient结构定义
