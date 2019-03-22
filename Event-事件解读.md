@@ -38,3 +38,9 @@
 >6、如果处于集群模式，对集群定期同步和连接测试  
 >7、配置redis.conf里hz选项可以修改每秒执行次数  
 7. 时间调度和执行
+>1、先aeSearchNearestTimer获取最近的一条时间事件  
+>2、判断距离最近的时间事件还剩多少毫秒remaind_ms  
+>3、创建timeval结构体（传入remaind_ms）
+>4、调用aeApiPoll（timeval）  
+>5、processFileEvents()//处理所以已产生的文件事件  
+>6、processTimeEvents()//处理所以已产生的时间事件
