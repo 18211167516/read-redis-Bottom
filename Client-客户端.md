@@ -49,7 +49,10 @@ typedef struct redisClient{
 >7、redisCommand (命令实现函数)  
 >8、buf、bufpos（固定输出缓存区），主要用来回复长度较短的回复  
 >9、reply（可变大小输出缓存区）。当buf数组的空间已经用完，或者长度超过16kb  
->10、authenticated (身份验证) 0 未认证（只允许auth命令执行） 1 已通过（如果服务器开启身份验证的话）
+>10、authenticated (身份验证) 0 未认证（只允许auth命令执行） 1 已通过（如果服务器开启身份验证的话）  
+>11、ctime （客户端创建时间），计算客户端连接了多少秒 client list命令age  
+>12、lastinteraction（最后一次互动时间），计算客户端空转时间 （idle），client list命令idel  
+>13、obuf_soft_limit_reached_time（输出缓存区达到软性限制的时间）  
 4. flags标志的常见常量
 > 1、REDIS_MASTER (主从复制操作时)，代表主服务器  
 > 2、REDIS_SLAVE (主从复制操作时)，代表从服务器  
@@ -67,3 +70,19 @@ typedef struct redisClient{
 >14、REDIS_ASKING （表示客户端向集群节点发送了ASKING命令）  
 >15、REDIS_FORCE_AOF (表示强制服务器将当前执行的命令写入AOF)  执行pubsub命令会出现此标志
 >16、REDIS_FORCE_REPL (强制主服务器将当前执行的命令复制给所有从服务器) 执行script load 会出现此标志  
+5. 客户端创建
+```
+1、创建普通客户端，服务器会调用连接事件处理器，为客户端创建相应的状态。并添加到服务器状态结构clients链表尾部
+2、Lua脚本创建的伪客户端（服务器关闭才会关闭）
+3、AOF文件载入创建伪客户端，并在载入成功后，关闭
+```
+6. 客户端关闭（常见场景）
+>1、客户端进程退出或者杀死  
+>2、客户端向服务器发送了不符合协议格式的命令请求  
+>3、使用client kill  
+>4、服务器设置了timeout配置项，客户端空转时间超过这个值被关闭，特殊情况（REDIS_MASTER|REDIS_SLAVE|REDIS_BLOCKED或者执行发布订阅命令不会关闭）  
+>5、命令请求超过了输入缓存区限制大小（默认1GB）  
+>6、如果发送客户端的命令回复大小超过了输出缓存区的限制大小  
+>> 6.1、硬性限制（hard limit），超过这个大小，直接关闭  
+>> 6.2、软性限制 （soft limit）,如果超过了这个大小，但没有超过硬性限制，将使用客户端状态obuf_soft_limit_reached_time记录起始时间，之后一直监视，如果持续超过软性限制，并且超过设定时长，关闭，如果在指定时间内，没有超过obuf_soft_limit_reached_time归零  
+>> 6.3、使用client-output-bugger-limit <class> <hard limit> <soft limit> <soft srconds> 命令可以为普通客户端，从服务器客户端，执行发布于订阅客户端设置限制
