@@ -14,5 +14,5 @@
 10. [Event-事件解读](https://github.com/18211167516/read-redis-Bottom/blob/master/Event-事件解读.md)
 11. [Client-客户端](https://github.com/18211167516/read-redis-Bottom/blob/master/Client-客户端.md)
 12. [Server-服务器解读](https://github.com/18211167516/read-redis-Bottom/blob/master/Server-服务器解读.md)
-
+13. [Slaveof-主从复制](https://github.com/18211167516/read-redis-Bottom/blob/master/Slaveof-主从复制.md)
 
