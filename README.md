@@ -2,4 +2,4 @@
 
 ## 阅读顺序
 
-<a href="#redisDb-数据库解读.md">redisDb-数据库解读.md</a>
+[redisDb-数据库解读.md](#redisDb-数据库解读.md)
