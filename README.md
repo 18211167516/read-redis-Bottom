@@ -1,2 +1,5 @@
-# read-redis-Bottom
-阅读
+# 阅读redis设计与实现读后心得
+
+## 阅读顺序
+
+<a href="#redisDb-数据库解读.md">redisDb-数据库解读.md</a>
