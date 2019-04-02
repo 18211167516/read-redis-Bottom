@@ -76,8 +76,8 @@ typedef struct sentinelAddr{
 > 6、多个sentinel监视同一个服务器，会同时收到其中一台发送给服务器的频道消息；同时提取消息，通过s_runid判断是否自己发送，如果不是就更新对应实例结构  
 > 7、更新sentinels字典：保存同样监视这个主服务器的其他sentinel的资料  
 > 8、当通过频道消息发现新的sentinel时：在sentinels字典中新增；创建一个连向新sentinel的命令连接，同时新sentinel也会创建连向这个的连接  
-> 9、检测主观下线：默认每秒一次向所有创建了命令连接的实例（主服务器，从服务器，其他sentinel），发送ping 命令，判断是否在线；
-> 10、根据配置文件选项 down-after-milliseconds的值，在这个值的范围外一直没有响应就会判断为主观下线 (包括主从服务器，其他sentinel)，多个sentinel该选项的值不同  
+> 9、检测主观下线：默认每秒一次向所有创建了命令连接的实例（主服务器，从服务器，其他sentinel），发送ping 命令，判断是否在线；  
+> 10、根据配置文件选项 down-after-milliseconds的值，在这个值的范围外一直没有响应就会判断为主观下线 (包括主从服务器，其他sentinel)，多个sentinel该选项的值不同    
 > 11、检测客观下线状态：当某个sentinel将一个主服务器判断为主观下线时，会向其他监视这个主服务器的sentinel进行询问确认，当确认的值达到quorum时，会判定为客观下线，并对服务器进行故障转移  
 > 12、发送sentinel is-master-down-by-addr <ip> <port> <current_epoch> <runid>   
 > 13、接受到命令时：返回 <down_state>(1下线 0 未下线) <leader_runid>（*或者局部领头sentinel 运行id） <leader_epoch> （局部领头sentinel配置纪元）  
